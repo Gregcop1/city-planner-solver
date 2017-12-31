@@ -1,0 +1,8 @@
+@import "../../assets/styles/settings/colors";
+@import "../../assets/styles/settings/dimensions";
+
+:host {
+  position: relative; display: inline-block; width: (7*$frameWidth) + 5; height: (7*$frameHeight) + 5;
+  border: 10px solid $wood;
+  text-align: left;
+}

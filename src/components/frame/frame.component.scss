@@ -1,0 +1,8 @@
+@import "../../assets/styles/settings/colors";
+@import "../../assets/styles/settings/dimensions";
+
+:host {
+  position: absolute; border: 1px solid $wood-light; width: $frameWidth; height: $frameHeight;
+  background-color: $wood-lightest; transform: translateX(-1px);
+}
+:host.frame-forbidden { background-color: $wood-lamp; }

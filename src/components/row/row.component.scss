@@ -1,0 +1,3 @@
+@import "../../assets/styles/settings/dimensions";
+
+:host { position: absolute; display: inline-block; height: $frameHeight; transform: translateY(-1px); }
