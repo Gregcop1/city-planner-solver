@@ -1,5 +1,5 @@
 import {Component, ElementRef, HostBinding, Input, OnInit} from '@angular/core';
-import {ICoord} from '../../interfaces/ICoord';
+import {Frame} from '../../models/Frame';
 
 @Component({
   selector: 'app-frame',
@@ -9,16 +9,13 @@ import {ICoord} from '../../interfaces/ICoord';
 })
 export class FrameComponent implements OnInit {
   @Input()
-  private forbidden: ICoord;
-
-  @Input()
-  private coordinate: ICoord;
+  private frame: Frame;
 
   constructor(private element: ElementRef) { }
 
   ngOnInit() {
     const el: any = this.element.nativeElement;
-    el.style.left = `${this.coordinate.x * (el.offsetWidth - 2)}px`;
+    el.style.left = `${this.frame.x * (el.offsetWidth - 2)}px`;
   }
 
   /**
@@ -28,10 +25,7 @@ export class FrameComponent implements OnInit {
    */
   @HostBinding('class.frame-forbidden')
   public get isForbidden(): boolean {
-    console.log(this.forbidden, this.coordinate)
-    return undefined !== this.forbidden &&
-      this.forbidden.x === this.coordinate.x &&
-      this.forbidden.y === this.coordinate.y;
+    return this.frame.forbidden;
   }
 
 }

@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ICoord} from '../../interfaces/ICoord';
+import {BoardService} from '../../services/board.service';
 
 @Component({
   selector: 'app-board',
@@ -10,14 +11,13 @@ export class BoardComponent implements OnInit {
   @Input()
   private forbidden: ICoord;
 
-  private readonly maxX: number = 7;
-  private rows: any[];
+  private frames: any[] = [];
 
-  constructor() {
-    this.rows = new Array(this.maxX);
-  }
+  constructor(private boardService: BoardService) {}
 
   ngOnInit() {
+    this.boardService.frames.subscribe((frames: any[]) => { this.frames = frames; });
+    this.boardService.initFrames(this.forbidden);
   }
 
 }

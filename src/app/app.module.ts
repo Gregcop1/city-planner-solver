@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { BoardComponent } from '../components/board/board.component';
 import { FrameComponent } from '../components/frame/frame.component';
 import { RowComponent } from '../components/row/row.component';
+import { BoardService } from '../services/board.service';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,7 @@ import { RowComponent } from '../components/row/row.component';
   imports: [
     BrowserModule
   ],
-  providers: [],
+  providers: [BoardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

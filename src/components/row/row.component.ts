@@ -1,5 +1,5 @@
 import {Component, ElementRef, Input, OnInit} from '@angular/core';
-import {ICoord} from '../../interfaces/ICoord';
+import {Frame} from '../../models/Frame';
 
 @Component({
   selector: 'app-row',
@@ -9,17 +9,12 @@ import {ICoord} from '../../interfaces/ICoord';
 })
 export class RowComponent implements OnInit {
   @Input()
-  private forbidden: ICoord;
+  private frames: Frame[] = [];
 
   @Input()
   private rowNumber: number = 0;
 
-  private readonly maxY: number = 7;
-  private columns: any[];
-
-  constructor(private element: ElementRef) {
-    this.columns = new Array(this.maxY);
-  }
+  constructor(private element: ElementRef) {}
 
   ngOnInit() {
     const el: any = this.element.nativeElement;
