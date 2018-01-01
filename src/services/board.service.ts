@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import {ICoord} from '../interfaces/ICoord';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {Frame} from '../models/Frame';
 
 @Injectable()
 export class BoardService {
   private readonly maxX: number = 7;
   private readonly maxY: number = 7;
-  public frames: BehaviorSubject<any[]> = new BehaviorSubject([]);
+  public frames: ReplaySubject<any[]> = new ReplaySubject();
 
   /**
    * Inits frame's list

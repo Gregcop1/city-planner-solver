@@ -3,3 +3,15 @@ $wood:  #4c3c2a;
 $wood-light:  lighten($wood, 50);
 $wood-lightest:  lighten($wood, 70);
 $wood-lamp:  lighten($wood, 55);
+
+$hue-rotation: 35deg;
+$piece-1: #0c4c7f;
+$piece-2: adjust_hue($piece-1, $hue-rotation);
+$piece-3: adjust_hue($piece-2, $hue-rotation);
+$piece-4: adjust_hue($piece-3, $hue-rotation);
+$piece-5: adjust_hue($piece-4, $hue-rotation);
+$piece-6: adjust_hue($piece-5, $hue-rotation);
+$piece-7: adjust_hue($piece-6, $hue-rotation);
+$piece-8: adjust_hue($piece-7, $hue-rotation);
+$piece-9: adjust_hue($piece-8, $hue-rotation);
+$piece-10: adjust_hue($piece-9, $hue-rotation);

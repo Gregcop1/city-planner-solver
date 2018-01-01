@@ -6,6 +6,7 @@ import { BoardComponent } from '../components/board/board.component';
 import { FrameComponent } from '../components/frame/frame.component';
 import { RowComponent } from '../components/row/row.component';
 import { BoardService } from '../services/board.service';
+import {PiecesService} from '../services/pieces.service';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,10 @@ import { BoardService } from '../services/board.service';
   imports: [
     BrowserModule
   ],
-  providers: [BoardService],
+  providers: [
+    BoardService,
+    PiecesService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
