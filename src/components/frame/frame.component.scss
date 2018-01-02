@@ -9,6 +9,7 @@
   background: $wood-lightest url('../../assets/img/lamp.png') 50% 50% no-repeat; background-size: contain;
 }
 
+:host.frame--2 { background-color: $error; border-color: $error; }
 :host.frame-1 { background-color: $piece-1; border-color: $piece-1; }
 :host.frame-2 { background-color: $piece-2; border-color: $piece-2; }
 :host.frame-3 { background-color: $piece-3; border-color: $piece-3; }

@@ -15,6 +15,8 @@ export class BoardComponent implements OnInit {
   @Input()
   private forbidden: ICoord;
 
+  private readonly UNUSABLE_FRAME: number = -2;
+
   private frames: Frame[][] = [];
   private originalFrames: Frame[][] = [];
   private currentPiece: Piece;
@@ -82,8 +84,13 @@ export class BoardComponent implements OnInit {
       this.frames = frames.map((row: Frame[]) => {
         return row.map((frame: Frame) => {
           let value: number;
+          const alreadyUsed: boolean = 0 !== frame.value || frame.forbidden;
+
           if (null !== (value = current.getValue({x: frame.x, y: frame.y}))) {
-            return {...frame, value};
+            return {
+              ...frame,
+              value: (0 === value || (0 === frame.value && !frame.forbidden)) ? value : this.UNUSABLE_FRAME
+            };
           }
 
           return frame;
