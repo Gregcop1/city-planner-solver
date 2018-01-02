@@ -2,35 +2,35 @@ import { Injectable } from '@angular/core';
 import {Piece} from '../models/Piece';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {Subscription} from 'rxjs/Subscription';
 
 @Injectable()
 export class PiecesService {
   public pieces: Piece[] = [];
   public usedPieces: BehaviorSubject<Piece[]> = new BehaviorSubject([]);
+  private currentPieceIndex: number = 0;
   public currentPiece: ReplaySubject<Piece> = new ReplaySubject();
 
   constructor() {
     this.initPieces();
-    this.selectPiece(2);
-/*
-    setTimeout(() => {
-      this.usedPieces.next([
-        ...this.usedPieces.value,
-        this.pieces[1]
-      ]);
-    }, 5000);
-
-    setTimeout(() => {
-      this.usedPieces.next([
-        ...this.usedPieces.value,
-        this.pieces[5]
-      ]);
-    }, 10000);
-*/
+    this.selectPiece(this.currentPieceIndex);
   }
 
-  private selectPiece(number: number) {
+  /**
+   * Select a specific piece as current piece
+   *
+   * @param {number} number
+   */
+  private selectPiece(number: number): void {
+    this.currentPieceIndex = number;
     this.currentPiece.next(this.pieces[number]);
+  }
+
+  /**
+   * Selects next piece as current piece
+   */
+  public selectNextPiece(): void {
+    this.selectPiece((this.currentPieceIndex + 1) % this.pieces.length);
   }
 
   /**
