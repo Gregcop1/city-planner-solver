@@ -9,7 +9,7 @@ export class PiecesService {
 
   constructor() {
     this.initPieces();
-    this.selectPiece(0);
+    this.selectPiece(3);
   }
 
   private selectPiece(number: number) {

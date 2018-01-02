@@ -46,12 +46,12 @@ export class Piece {
    * @returns {boolean}
    */
   private isInBoundaries(coord: ICoord, matrix: number[][]): boolean {
-    return this.matrix.length &&
-      this.matrix[0].length &&
+    return matrix.length &&
+      matrix[0].length &&
       coord.x >= 0 &&
-      coord.x + this.matrix[0].length <= BoardService.maxX &&
+      coord.x + matrix[0].length <= BoardService.maxX &&
       coord.y >= 0 &&
-      coord.y + this.matrix.length <= BoardService.maxY;
+      coord.y + matrix.length <= BoardService.maxY;
   }
 
   /**
@@ -103,5 +103,43 @@ export class Piece {
       this.coordinates = coord;
       this.changes.emit();
     }
+  }
+
+  /**
+   * Rotates the matrix from 90 deg clockwise
+   */
+  public rotate(): void {
+    const grid = this.rotateMatrix(this.matrix);
+    if (this.isInBoundaries(this.coordinates, grid)) {
+      this.matrix = grid;
+      this.changes.emit();
+    }
+  }
+
+  /**
+   * Rotates a matrix
+   * @param {number[][]} matrix
+   * @returns {number[][]}
+   */
+  private rotateMatrix (matrix: number[][]) {
+    if (undefined === matrix || undefined === matrix[0]) {
+      return [];
+    }
+
+    const newMatrix: number[][] = [];
+    const maxY: number = matrix.length - 1;
+
+    for (let y = 0; y < matrix.length; y++) {
+      for (let x = 0; x < matrix[y].length; x++) {
+        const newX: number = maxY - y;
+        if (undefined === newMatrix[x]) {
+          newMatrix[x] = [];
+        }
+
+        newMatrix[x][newX] = matrix[y][x];
+      }
+    }
+
+    return newMatrix;
   }
 }

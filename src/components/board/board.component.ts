@@ -52,7 +52,6 @@ export class BoardComponent implements OnInit {
 
   bindKeyboard(e: KeyboardEvent) {
     if (this.currentPiece) {
-      console.log(e.keyCode)
       switch(e.keyCode) {
         case 37: // left
           this.currentPiece.moveToLeft();
@@ -65,6 +64,9 @@ export class BoardComponent implements OnInit {
           break;
         case 40: // down
           this.currentPiece.moveToBottom();
+          break;
+        case 82: // r
+          this.currentPiece.rotate();
           break;
       }
     }
