@@ -1,0 +1,8 @@
+@import "../../assets/styles/settings/colors";
+
+:host { display: flex; margin-top: 40px; align-items: center; flex-flow: row wrap; justify-content: center; }
+.piece { display: flex; margin: 10px; width: 100px; flex-direction: column; }
+.piece-active .column-active { background-color: $wood-light; }
+.row { display: flex; flex-direction: row; justify-content: center; }
+.column { border: 1px solid $white; width: 20px; height: 20px; }
+.column-active { background-color: $wood; }

@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { BoardComponent } from '../components/board/board.component';
 import { FrameComponent } from '../components/frame/frame.component';
+import { PieceListComponent } from '../components/piece-list/piece-list.component';
 import { RowComponent } from '../components/row/row.component';
 import { BoardService } from '../services/board.service';
 import {PiecesService} from '../services/pieces.service';
@@ -13,7 +14,8 @@ import {PiecesService} from '../services/pieces.service';
     AppComponent,
     BoardComponent,
     FrameComponent,
-    RowComponent
+    RowComponent,
+    PieceListComponent
   ],
   imports: [
     BrowserModule

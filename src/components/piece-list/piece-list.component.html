@@ -1,0 +1,10 @@
+<div class="piece"
+     [ngClass]="{'piece-active': isActive(piece)}"
+     *ngFor="let piece of pieces">
+  <div class="row"
+       *ngFor="let row of piece.matrix">
+    <div class="column"
+         [ngClass]="{'column-active': column}"
+         *ngFor="let column of row"></div>
+  </div>
+</div>
