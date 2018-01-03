@@ -13,8 +13,6 @@ import 'rxjs/add/operator/debounceTime';
   styleUrls: ['./board.component.scss'],
 })
 export class BoardComponent implements OnInit {
-  @Input()
-  private forbidden: ICoord;
 
   @HostBinding('class.solved')
   private solved: boolean = false;
@@ -25,10 +23,29 @@ export class BoardComponent implements OnInit {
   private originalFrames: Frame[][] = [];
   private usedPieces: Piece[] = [];
   private currentPiece: Piece;
+  private forbidden: ICoord;
+  private forbiddenLocations: ICoord[] = [
+    {x: 6, y: 6},
+    {x: 1, y: 6},
+    {x: 4, y: 5},
+    {x: 3, y: 4},
+    {x: 0, y: 3},
+    {x: 3, y: 3},
+    {x: 5, y: 3},
+    {x: 1, y: 2},
+    {x: 4, y: 2},
+    {x: 6, y: 2},
+    {x: 1, y: 1},
+    {x: 6, y: 1},
+    {x: 4, y: 0},
+  ];
 
   constructor(private boardService: BoardService, private piecesService: PiecesService) {}
 
   ngOnInit() {
+    // calculate forbidden place
+    this.forbidden = this.forbiddenLocations[Math.floor(Math.random() * this.forbiddenLocations.length)];
+
     // listen for puzzle success
     this.piecesService.solved
       .subscribe((solved: boolean) => this.solved = solved);
