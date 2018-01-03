@@ -14,17 +14,15 @@ import 'rxjs/add/operator/map';
 })
 export class PieceListComponent implements OnInit {
   public pieces: Piece[] = [];
+  public usedPieces: Piece[] = [];
   private currentPiece: Piece;
 
   constructor(private piecesService: PiecesService) { }
 
   ngOnInit() {
-    Observable.of(this.piecesService.pieces)
-      .combineLatest(this.piecesService.usedPieces)
-      .map(([list, used]) => {
-        return list.filter((piece: Piece) => !used.includes(piece));
-      })
-      .subscribe((list: any) => this.pieces = list);
+    this.pieces = this.piecesService.pieces;
+    this.piecesService.usedPieces
+      .subscribe((list: any) => this.usedPieces = list);
 
     this.piecesService.currentPiece.subscribe((piece: Piece) => this.currentPiece = piece);
   }
@@ -37,6 +35,16 @@ export class PieceListComponent implements OnInit {
    */
   public isActive(piece: Piece) {
     return this.currentPiece === piece;
+  }
+
+  /**
+   * Checks if a piece is already used
+   *
+   * @param {Piece} piece
+   * @returns {any}
+   */
+  public isUsed(piece: Piece) {
+    return this.usedPieces.includes(piece);
   }
 
 }

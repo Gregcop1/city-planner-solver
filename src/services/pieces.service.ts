@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {Piece} from '../models/Piece';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Subscription} from 'rxjs/Subscription';
 
 @Injectable()
 export class PiecesService {
@@ -31,6 +30,17 @@ export class PiecesService {
    */
   public selectNextPiece(): void {
     this.selectPiece((this.currentPieceIndex + 1) % this.pieces.length);
+  }
+
+  /**
+   * Saves current piece as used piece
+   */
+  public save(): void {
+    this.usedPieces.next([
+      ...this.usedPieces.getValue(),
+      this.pieces[this.currentPieceIndex],
+    ]);
+    this.selectNextPiece();
   }
 
   /**

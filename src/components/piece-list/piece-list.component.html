@@ -1,5 +1,8 @@
 <div class="piece"
-     [ngClass]="{'piece-active': isActive(piece)}"
+     [ngClass]="{
+      'piece-active': isActive(piece),
+      'piece-used': isUsed(piece)
+     }"
      *ngFor="let piece of pieces">
   <div class="row"
        *ngFor="let row of piece.matrix">
