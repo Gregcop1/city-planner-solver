@@ -2,9 +2,10 @@ import {Component, Input, OnInit} from '@angular/core';
 import {ICoord} from '../../interfaces/ICoord';
 import {BoardService} from '../../services/board.service';
 import {PiecesService} from '../../services/pieces.service';
-import 'rxjs/add/operator/combineLatest';
 import {Frame} from '../../models/Frame';
 import {Piece} from '../../models/Piece';
+import 'rxjs/add/operator/combineLatest';
+import 'rxjs/add/operator/debounceTime';
 
 @Component({
   selector: 'app-board',
@@ -19,6 +20,7 @@ export class BoardComponent implements OnInit {
 
   private frames: Frame[][] = [];
   private originalFrames: Frame[][] = [];
+  private usedPieces: Piece[] = [];
   private currentPiece: Piece;
 
   constructor(private boardService: BoardService, private piecesService: PiecesService) {}
@@ -32,16 +34,22 @@ export class BoardComponent implements OnInit {
       });
 
     // listen for board and current pieces changes
-    this.boardService.frames
-      .combineLatest(this.piecesService.currentPiece)
+    this.piecesService.currentPiece
+      .combineLatest(this.piecesService.usedPieces)
+      .combineLatest(this.boardService.frames)
+      .debounceTime(10)
       .subscribe(this.mergeWithCurrentPiece.bind(this));
+
+    // listen for used pieces changes
+    this.piecesService.usedPieces
+      .subscribe((pieces: Piece[]) => this.usedPieces = pieces);
 
     // listen for current piece changes
     this.piecesService.currentPiece
       .subscribe((piece: Piece) => {
         this.currentPiece = piece;
         this.currentPiece.changes.subscribe(() => {
-          this.mergeWithCurrentPiece([this.originalFrames, this.currentPiece]);
+          this.mergeWithCurrentPiece([[this.currentPiece, this.usedPieces], this.originalFrames]);
         });
       });
 
@@ -53,7 +61,7 @@ export class BoardComponent implements OnInit {
   }
 
   bindKeyboard(e: KeyboardEvent) {
-    console.log(e.keyCode);
+    // console.log(e.keyCode);
     if (this.currentPiece) {
       switch (e.keyCode) {
         case 37: // left
@@ -86,23 +94,41 @@ export class BoardComponent implements OnInit {
    * @param {any} frames
    * @param {any} current
    */
-  private mergeWithCurrentPiece([frames, current]) {
+  private mergeWithCurrentPiece([allPieces, frames]) {
+    const [current, used] = allPieces;
+
     if (frames && current) {
+      // combine used and current piece in a deduped array
+      const allUsedPieces: Piece[] = Array.from(new Set([...used, current]));
+
       this.frames = frames.map((row: Frame[]) => {
         return row.map((frame: Frame) => {
-          let value: number;
-          const alreadyUsed: boolean = 0 !== frame.value || frame.forbidden;
+          const value: number = this.getValueAtCoord(allUsedPieces, {x: frame.x, y: frame.y});
 
-          if (null !== (value = current.getValue({x: frame.x, y: frame.y}))) {
-            return {
-              ...frame,
-              value: (0 === value || (0 === frame.value && !frame.forbidden)) ? value : this.UNUSABLE_FRAME
-            };
-          }
-
-          return frame;
+          return {
+            ...frame,
+            value: (0 !== value && frame.forbidden) ? this.UNUSABLE_FRAME : value,
+          };
         });
       });
     }
+  }
+
+  getValueAtCoord(pieces: Piece[], coord: ICoord): number {
+    let value: number = 0;
+
+    pieces.forEach((piece: Piece) => {
+      const pieceValue: number = piece.getValue(coord);
+
+      if (null !== pieceValue && 0 !== pieceValue) {
+        if (0 !== value && 0 !== pieceValue) {
+          value = this.UNUSABLE_FRAME;
+        } else {
+          value = pieceValue;
+        }
+      }
+    });
+
+    return value;
   }
 }
