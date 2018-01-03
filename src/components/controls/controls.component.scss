@@ -1,8 +1,9 @@
 @import "../../assets/styles/settings/colors";
 
 :host {
-  position: absolute; top: 30px; left: 0; width: 150px;
+  position: absolute; top: 30px; left: 0; width: 150px; transition: 500ms opacity ease-in;
   text-align: left;
 }
+:host.solved { opacity: 0; }
 p { text-align: center; color: $grey; }
 img { display: block; margin: 0 auto 5px; }

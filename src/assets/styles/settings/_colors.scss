@@ -5,9 +5,10 @@ $wood-light:  lighten($wood, 50);
 $wood-lightest:  lighten($wood, 70);
 $wood-lamp:  lighten($wood, 55);
 $error: #730400;
+$success: #43a051;
 
-$hue-rotation: 35deg;
-$piece-1: #0c4c7f;
+$hue-rotation: 30deg;
+$piece-1: #48abcc;
 $piece-2: adjust_hue($piece-1, $hue-rotation);
 $piece-3: adjust_hue($piece-2, $hue-rotation);
 $piece-4: adjust_hue($piece-3, $hue-rotation);

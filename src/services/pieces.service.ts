@@ -9,6 +9,7 @@ export class PiecesService {
   public usedPieces: BehaviorSubject<Piece[]> = new BehaviorSubject([]);
   private currentPieceIndex: number = 0;
   public currentPiece: ReplaySubject<Piece> = new ReplaySubject();
+  public solved: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor() {
     this.initPieces();
@@ -36,11 +37,17 @@ export class PiecesService {
    * Saves current piece as used piece
    */
   public save(): void {
-    this.usedPieces.next([
+    const used: Piece[] = Array.from(new Set([
       ...this.usedPieces.getValue(),
       this.pieces[this.currentPieceIndex],
-    ]);
-    this.selectNextPiece();
+    ]));
+
+    this.usedPieces.next(used);
+    if (used.length === this.pieces.length) { // puzzle is solved
+      this.solved.next(true);
+    } else {
+      this.selectNextPiece();
+    }
   }
 
   /**

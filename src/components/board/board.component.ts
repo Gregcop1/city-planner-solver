@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, HostBinding, Input, OnInit} from '@angular/core';
 import {ICoord} from '../../interfaces/ICoord';
 import {BoardService} from '../../services/board.service';
 import {PiecesService} from '../../services/pieces.service';
@@ -16,6 +16,9 @@ export class BoardComponent implements OnInit {
   @Input()
   private forbidden: ICoord;
 
+  @HostBinding('class.solved')
+  private solved: boolean = false;
+
   private readonly UNUSABLE_FRAME: number = -2;
 
   private frames: Frame[][] = [];
@@ -26,6 +29,10 @@ export class BoardComponent implements OnInit {
   constructor(private boardService: BoardService, private piecesService: PiecesService) {}
 
   ngOnInit() {
+    // listen for puzzle success
+    this.piecesService.solved
+      .subscribe((solved: boolean) => this.solved = solved);
+
     // save original boar
     const boardSubscription = this.boardService.frames
       .subscribe((frames: Frame[][]) => {
@@ -60,9 +67,12 @@ export class BoardComponent implements OnInit {
     document.body.addEventListener('keydown', this.bindKeyboard.bind(this));
   }
 
+  /**
+   * Binds keyboard events
+   * @param {KeyboardEvent} e
+   */
   bindKeyboard(e: KeyboardEvent) {
-    // console.log(e.keyCode);
-    if (this.currentPiece) {
+    if (!this.solved && this.currentPiece) {
       switch (e.keyCode) {
         case 37: // left
           this.currentPiece.moveToLeft();
@@ -83,7 +93,9 @@ export class BoardComponent implements OnInit {
           this.currentPiece.rotate();
           break;
         case 32: // space
-          this.piecesService.save();
+          if (this.isSavable()) {
+            this.piecesService.save();
+          }
           break;
       }
     }
@@ -114,6 +126,12 @@ export class BoardComponent implements OnInit {
     }
   }
 
+  /**
+   * Gets value at specific coordinates
+   * @param {Piece[]} pieces
+   * @param {ICoord} coord
+   * @returns {number}
+   */
   getValueAtCoord(pieces: Piece[], coord: ICoord): number {
     let value: number = 0;
 
@@ -130,5 +148,16 @@ export class BoardComponent implements OnInit {
     });
 
     return value;
+  }
+
+  /**
+   * Checks if a frame contains conflicts
+   * @returns {boolean}
+   */
+  isSavable(): boolean {
+    return !this.frames.reduce((prev, current) => [...prev, ...current], [])
+      .map((item: Frame) => item.value)
+      .filter((value: number) => this.UNUSABLE_FRAME === value)
+      .length;
   }
 }

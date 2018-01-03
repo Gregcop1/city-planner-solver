@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, HostBinding, OnInit} from '@angular/core';
 import {Piece} from '../../models/Piece';
 import {PiecesService} from '../../services/pieces.service';
 import {Observable} from 'rxjs/Observable';
@@ -13,6 +13,9 @@ import 'rxjs/add/operator/map';
   styleUrls: ['./piece-list.component.scss']
 })
 export class PieceListComponent implements OnInit {
+  @HostBinding('class.solved')
+  private solved: boolean = false;
+
   public pieces: Piece[] = [];
   public usedPieces: Piece[] = [];
   private currentPiece: Piece;
@@ -20,6 +23,9 @@ export class PieceListComponent implements OnInit {
   constructor(private piecesService: PiecesService) { }
 
   ngOnInit() {
+    this.piecesService.solved
+      .subscribe((solved: boolean) => this.solved = solved);
+
     this.pieces = this.piecesService.pieces;
     this.piecesService.usedPieces
       .subscribe((list: any) => this.usedPieces = list);
