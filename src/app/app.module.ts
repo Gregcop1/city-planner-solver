@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { BoardComponent } from '../components/board/board.component';
+import { ControlsComponent } from '../components/controls/controls.component';
 import { FrameComponent } from '../components/frame/frame.component';
 import { PieceListComponent } from '../components/piece-list/piece-list.component';
 import { RowComponent } from '../components/row/row.component';
@@ -15,7 +16,8 @@ import {PiecesService} from '../services/pieces.service';
     BoardComponent,
     FrameComponent,
     RowComponent,
-    PieceListComponent
+    PieceListComponent,
+    ControlsComponent
   ],
   imports: [
     BrowserModule
