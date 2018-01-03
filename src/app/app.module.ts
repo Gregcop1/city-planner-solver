@@ -7,8 +7,9 @@ import { ControlsComponent } from '../components/controls/controls.component';
 import { FrameComponent } from '../components/frame/frame.component';
 import { PieceListComponent } from '../components/piece-list/piece-list.component';
 import { RowComponent } from '../components/row/row.component';
+import { RulesComponent } from '../components/rules/rules.component';
 import { BoardService } from '../services/board.service';
-import {PiecesService} from '../services/pieces.service';
+import { PiecesService } from '../services/pieces.service';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import {PiecesService} from '../services/pieces.service';
     FrameComponent,
     RowComponent,
     PieceListComponent,
-    ControlsComponent
+    ControlsComponent,
+    RulesComponent
   ],
   imports: [
     BrowserModule
