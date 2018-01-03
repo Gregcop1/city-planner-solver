@@ -6,6 +6,7 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 @Injectable()
 export class PiecesService {
   public pieces: Piece[] = [];
+  private used: Piece[] = [];
   public usedPieces: BehaviorSubject<Piece[]> = new BehaviorSubject([]);
   private currentPieceIndex: number = 0;
   public currentPiece: ReplaySubject<Piece> = new ReplaySubject();
@@ -37,10 +38,17 @@ export class PiecesService {
    * Saves current piece as used piece
    */
   public save(): void {
-    const used: Piece[] = Array.from(new Set([
-      ...this.usedPieces.getValue(),
-      this.pieces[this.currentPieceIndex],
-    ]));
+    const currentPiece: Piece = this.pieces[this.currentPieceIndex];
+    let used: Piece[];
+    if (this.usedPieces.getValue().includes(currentPiece)) {
+      used = this.usedPieces.getValue()
+        .filter((piece: Piece) => currentPiece !== piece);
+    } else {
+      used = Array.from(new Set([
+        ...this.usedPieces.getValue(),
+        this.pieces[this.currentPieceIndex],
+      ]));
+    }
 
     this.usedPieces.next(used);
     if (used.length === this.pieces.length) { // puzzle is solved
