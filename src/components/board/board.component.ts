@@ -92,25 +92,39 @@ export class BoardComponent implements OnInit {
     if (!this.solved && this.currentPiece) {
       switch (e.keyCode) {
         case 37: // left
-          this.currentPiece.moveToLeft();
+          if (!this.isCurrentPieceUsed(this.currentPiece)) {
+            this.currentPiece.moveToLeft();
+          }
           break;
         case 38: // top
-          this.currentPiece.moveToTop();
+          if (!this.isCurrentPieceUsed(this.currentPiece)) {
+            this.currentPiece.moveToTop();
+          }
           break;
         case 39: // right
-          this.currentPiece.moveToRight();
+          if (!this.isCurrentPieceUsed(this.currentPiece)) {
+            this.currentPiece.moveToRight();
+          }
           break;
         case 40: // down
-          this.currentPiece.moveToBottom();
+          if (!this.isCurrentPieceUsed(this.currentPiece)) {
+            this.currentPiece.moveToBottom();
+          }
           break;
         case 78: // n
-          this.piecesService.selectNextPiece();
+          if (this.isSavable() || !this.isCurrentPieceUsed(this.currentPiece)) {
+            this.piecesService.selectNextPiece();
+          }
           break;
         case 80: // p
-          this.piecesService.selectPreviousPiece();
+          if (this.isSavable() || !this.isCurrentPieceUsed(this.currentPiece)) {
+            this.piecesService.selectPreviousPiece();
+          }
           break;
         case 82: // r
-          this.currentPiece.rotate();
+          if (!this.isCurrentPieceUsed(this.currentPiece)) {
+            this.currentPiece.rotate();
+          }
           break;
         case 32: // space
           if (this.isSavable()) {
@@ -162,7 +176,7 @@ export class BoardComponent implements OnInit {
         if (0 !== value && 0 !== pieceValue) {
           value = this.UNUSABLE_FRAME;
         } else {
-          value = pieceValue;
+          value = pieceValue + (this.isCurrentPieceUsed(piece) ? 10 : 0);
         }
       }
     });
@@ -179,5 +193,13 @@ export class BoardComponent implements OnInit {
       .map((item: Frame) => item.value)
       .filter((value: number) => this.UNUSABLE_FRAME === value)
       .length;
+  }
+
+  /**
+   * Checks if the piece has already been saved
+   * @returns {boolean}
+   */
+  isCurrentPieceUsed(piece: Piece): boolean {
+    return this.usedPieces.includes(piece);
   }
 }

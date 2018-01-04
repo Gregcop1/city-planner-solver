@@ -61,8 +61,6 @@ export class PiecesService {
     this.usedPieces.next(used);
     if (used.length === this.pieces.length) { // puzzle is solved
       this.solved.next(true);
-    } else {
-      this.selectNextPiece();
     }
   }
 
