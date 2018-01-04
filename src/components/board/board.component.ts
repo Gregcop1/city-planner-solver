@@ -106,6 +106,9 @@ export class BoardComponent implements OnInit {
         case 78: // n
           this.piecesService.selectNextPiece();
           break;
+        case 80: // p
+          this.piecesService.selectPreviousPiece();
+          break;
         case 82: // r
           this.currentPiece.rotate();
           break;

@@ -35,6 +35,14 @@ export class PiecesService {
   }
 
   /**
+   * Selects previous piece as current piece
+   */
+  public selectPreviousPiece(): void {
+    const newIndex: number = this.currentPieceIndex - 1;
+    this.selectPiece(newIndex >= 0 ? newIndex : this.pieces.length - 1);
+  }
+
+  /**
    * Saves current piece as used piece
    */
   public save(): void {

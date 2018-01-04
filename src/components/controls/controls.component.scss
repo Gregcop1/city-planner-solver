@@ -1,7 +1,7 @@
 @import "../../assets/styles/settings/colors";
 
 :host {
-  position: absolute; top: 30px; left: 0; width: 150px; transition: 500ms opacity ease-in;
+  position: absolute; top: 0; left: 0; width: 150px; transition: 500ms opacity ease-in;
   text-align: left;
 }
 :host.solved { opacity: 0; }
